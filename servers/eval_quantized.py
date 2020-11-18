@@ -270,7 +270,7 @@ def main():
     model.eval()
     
     # NEW
-    model = torch.quantization.fuse_modules(model, [['conv', 'relu', 'batchnorm']])
+    model = torch.quantization.fuse_modules(model, [['conv2d', 'relu', 'batchnorm']])
     model = torch.quantization.prepare(model)
     print(f"Quantizing the model...")
     start_time = time.time()

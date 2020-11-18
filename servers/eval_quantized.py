@@ -15,6 +15,7 @@ from sklearn.model_selection import KFold
 import time
 
 
+
 class BobRossSegmentedImagesDataset(Dataset):
     def __init__(self, dataroot):        
         super().__init__()
@@ -263,5 +264,7 @@ def main():
     print(f"Evaluation done in {str(time.time() - start_time)} seconds.")
 
 
+print("GOT TO MAIN")
 if __name__ == "__main__":
+    print("TRIGGERED MAIN")
     main()

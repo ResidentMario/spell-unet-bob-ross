@@ -15,6 +15,7 @@ from torch.utils.tensorboard import SummaryWriter
 import numpy as np
 from PIL import Image
 from sklearn.model_selection import KFold
+import time
 
 
 class BobRossSegmentedImagesDataset(Dataset):

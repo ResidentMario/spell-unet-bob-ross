@@ -240,6 +240,7 @@ def main():
     dataloader = DataLoader(dataset, shuffle=True, batch_size=8)
         
     model = UNet()
+    model.cuda()
     model.qconfig = torch.quantization.get_default_qconfig('fbgemm')
     
     criterion = nn.CrossEntropyLoss()

@@ -260,12 +260,18 @@ def main():
         
     model.eval()
     
-    print(f"Evaluating the model...")
-    start_time = time.time()
+    # Load all batches into memory ahead of time, so that the cost of moving it from host memory
+    # to working memory is excluded from the GPU benchmark time.
+    batches = []
+    
     for i, (batch, segmap) in enumerate(dataloader):
         if not is_cpu:
             batch = batch.cuda()
-            segmap = segmap.cuda()
+        batches.append(batch)
+    
+    print(f"Evaluating the model...")
+    start_time = time.time()
+    for batch in batches:
         model(batch)
     
     print(f"Evaluation done in {str(time.time() - start_time)} seconds.")

@@ -235,7 +235,8 @@ def main():
     dataroot = Path('/mnt/segmented-bob-ross-images/')
     dataset = BobRossSegmentedImagesDataset(dataroot)
     dataloader = DataLoader(dataset, shuffle=True, batch_size=8)
-    
+
+    print("Loading the model...")
     model = UNet()
     model.qconfig = torch.quantization.get_default_qconfig('fbgemm')
     checkpoints_dir = '/spell/checkpoints'

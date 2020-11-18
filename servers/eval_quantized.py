@@ -232,6 +232,7 @@ class UNet(nn.Module):
         return x
 
 def main():
+    print("Starting up...")
     dataroot = Path('/mnt/segmented-bob-ross-images/')
     dataset = BobRossSegmentedImagesDataset(dataroot)
     dataloader = DataLoader(dataset, shuffle=True, batch_size=8)

@@ -254,7 +254,7 @@ def main():
     start_time = time.time()
     
     for i, (batch, segmap) in enumerate(dataloader):
-        batch = batch.cuda()
+        # batch = batch.cuda()
         # segmap = segmap.cuda()
         model(batch)
 
@@ -264,7 +264,7 @@ def main():
     print(f"Evaluating the model...")
     start_time = time.time()
     for i, (batch, segmap) in enumerate(dataloader):
-        batch = batch.cuda()
+        # batch = batch.cuda()
         # segmap = segmap.cuda()
         model(batch)
     

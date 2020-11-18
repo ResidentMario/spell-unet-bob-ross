@@ -15,6 +15,7 @@ from torch.utils.tensorboard import SummaryWriter
 import numpy as np
 from PIL import Image
 from sklearn.model_selection import KFold
+
 import time
 
 
@@ -233,7 +234,7 @@ class UNet(nn.Module):
 
 
 def main():
-    if torch.cuda.device_count() > 1:
+    if torch.cuda.device_count() >= 1:
         device = torch.device("cuda")
         is_cpu = False
     else:
@@ -260,18 +261,12 @@ def main():
         
     model.eval()
     
-    # Load all batches into memory ahead of time, so that the cost of moving it from host memory
-    # to working memory is excluded from the GPU benchmark time.
-    batches = []
-    
+    print(f"Evaluating the model...")
+    start_time = time.time()
     for i, (batch, segmap) in enumerate(dataloader):
         if not is_cpu:
             batch = batch.cuda()
-        batches.append(batch)
-    
-    print(f"Evaluating the model...")
-    start_time = time.time()
-    for batch in batches:
+            segmap = segmap.cuda()
         model(batch)
     
     print(f"Evaluation done in {str(time.time() - start_time)} seconds.")

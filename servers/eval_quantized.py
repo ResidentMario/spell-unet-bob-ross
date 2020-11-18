@@ -238,6 +238,7 @@ def main():
     
     model = UNet()
     model.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+    checkpoints_dir = '/spell/checkpoints'
     model.load_state_dict(
         torch.load(f"{checkpoints_dir}/model_50.pth", map_location=torch.device('cpu'))
     )

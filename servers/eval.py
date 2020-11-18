@@ -234,10 +234,10 @@ class UNet(nn.Module):
 def main():
     if torch.cuda.device_count() > 1:
         device = torch.device("cuda")
-        is_cpu_run = False
+        is_cpu = False
     else:
         device = torch.device("cpu")
-        is_cpu_run = True
+        is_cpu = True
 
     print("Starting up...")
     dataroot = Path('/mnt/segmented-bob-ross-images/')

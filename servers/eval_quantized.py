@@ -273,14 +273,14 @@ def main():
     model = torch.quantization.fuse_modules(
         model,
         [
-            ['conv_1_1', 'relu_1_2', 'norm_1_3'],
-            ['conv_1_4', 'relu_1_5', 'norm_1_6'],
-            ['conv_2_1', 'relu_2_2', 'norm_2_3'],
-            ['conv_2_4', 'relu_2_5', 'norm_2_6'],
-            ['conv_3_1', 'relu_3_2', 'norm_3_3'],
-            ['conv_3_4', 'relu_3_5', 'norm_3_6'],
-            ['conv_4_1', 'relu_4_2', 'norm_4_3'],
-            ['conv_4_4', 'relu_4_5', 'norm_4_6'],
+            ['conv_1_1', 'relu_1_2'],
+            ['conv_1_4', 'relu_1_5'],
+            ['conv_2_1', 'relu_2_2'],
+            ['conv_2_4', 'relu_2_5'],
+            ['conv_3_1', 'relu_3_2'],
+            ['conv_3_4', 'relu_3_5'],
+            ['conv_4_1', 'relu_4_2'],
+            ['conv_4_4', 'relu_4_5'],
         ]
     )
     model = torch.quantization.prepare(model)

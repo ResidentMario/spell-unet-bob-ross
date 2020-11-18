@@ -252,15 +252,22 @@ def main():
     model = torch.quantization.prepare(model)
     print(f"Quantizing the model...")
     start_time = time.time()
-    for idx, records in enumerate(dataloader):
-        model(records)
+    
+    for i, (batch, segmap) in enumerate(dataloader):
+        batch = batch.cuda()
+        # segmap = segmap.cuda()
+        model(batch)
+
     model = torch.quantization.convert(model)
     print(f"Quantization done in {str(time.time() - start_time)} seconds.")
 
     print(f"Evaluating the model...")
     start_time = time.time()
-    for idx, records in enumerate(dataloader):
-        model(records)    
+    for i, (batch, segmap) in enumerate(dataloader):
+        batch = batch.cuda()
+        # segmap = segmap.cuda()
+        model(batch)
+    
     print(f"Evaluation done in {str(time.time() - start_time)} seconds.")
 
 

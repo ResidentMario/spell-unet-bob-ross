@@ -10,6 +10,7 @@ from torch import nn
 from torchvision import transforms
 import torch.optim as optim
 import torch.quantization
+from torch.utils.tensorboard import SummaryWriter
 
 import numpy as np
 from PIL import Image

@@ -174,6 +174,12 @@ class UNet(nn.Module):
         # 1x1 conv ~= fc; n_classes = 9
         self.conv_8_1 = nn.Conv2d(64, 9, 1)
         self.dq_4 = torch.quantization.DeQuantStub()
+        
+        # residual connections need to be dequantized seperately
+        self.dq_resid_1 = torch.quantization.DeQuantStub()
+        self.dq_resid_2 = torch.quantization.DeQuantStub()
+        self.dq_resid_3 = torch.quantization.DeQuantStub()
+        
 
     def forward(self, x):
         x = self.q_1(x)        
@@ -182,24 +188,27 @@ class UNet(nn.Module):
         x = self.norm_1_3(x)
         x = self.conv_1_4(x)
         x = self.relu_1_5(x)
-        x_residual_1 = self.norm_1_6(x)
-        x = self.pool_1_7(x_residual_1)
+        x_resid_1_quantized = self.norm_1_6(x)
+        x = self.pool_1_7(x_resid_1_quantized)
+        x_resid_1 = self.dq_resid_1(x_resid_1_quantized)
         
         x = self.conv_2_1(x)
         x = self.relu_2_2(x)
         x = self.norm_2_3(x)
         x = self.conv_2_4(x)
         x = self.relu_2_5(x)
-        x_residual_2 = self.norm_2_6(x)
-        x = self.pool_2_7(x_residual_2)
+        x_resid_2_quantized = self.norm_2_6(x)
+        x = self.pool_2_7(x_resid_2_quantized)
+        x_resid_2 = self.dq_resid_2(x_resid_2_quantized)
         
         x = self.conv_3_1(x)
         x = self.relu_3_2(x)
         x = self.norm_3_3(x)
         x = self.conv_3_4(x)
         x = self.relu_3_5(x)
-        x_residual_3 = self.norm_3_6(x)
-        x = self.pool_3_7(x_residual_3)
+        x_resid_3_quantized = self.norm_3_6(x)
+        x = self.pool_3_7(x_resid_3_quantized)
+        x_resid_3 = self.dq_resid_3(x_resid_3_quantized)
         
         x = self.conv_4_1(x)
         x = self.relu_4_2(x)
@@ -210,7 +219,7 @@ class UNet(nn.Module):
         x = self.dq_1(x)
         
         x = self.deconv_5_1(x)
-        x = self.concat_5_3(self.c_crop_5_2(x_residual_3), x)
+        x = self.concat_5_3(self.c_crop_5_2(x_resid_3), x)
         x = self.q_2(x)
         x = self.conv_5_4(x)
         x = self.relu_5_5(x)
@@ -221,7 +230,7 @@ class UNet(nn.Module):
         x = self.dq_2(x)
         
         x = self.deconv_6_1(x)
-        x = self.concat_6_3(self.c_crop_6_2(x_residual_2), x)
+        x = self.concat_6_3(self.c_crop_6_2(x_resid_2), x)
         x = self.q_3(x)
         x = self.conv_6_4(x)
         x = self.relu_6_5(x)
@@ -232,7 +241,7 @@ class UNet(nn.Module):
         x = self.dq_3(x)
         
         x = self.deconv_7_1(x)
-        x = self.concat_7_3(self.c_crop_7_2(x_residual_1), x)
+        x = self.concat_7_3(self.c_crop_7_2(x_resid_1), x)
         x = self.q_4(x)
         x = self.conv_7_4(x)
         x = self.relu_7_5(x)

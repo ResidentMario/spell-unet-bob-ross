@@ -140,7 +140,7 @@ class UNet(nn.Module):
         torch.nn.init.kaiming_normal_(self.conv_5_7.weight)
         self.relu_5_8 = nn.ReLU()
         self.norm_5_9 = nn.BatchNorm2d(256)
-        self.dq_2 = torch.quantization.QuantStub()
+        self.dq_2 = torch.quantization.DeQuantStub()
         
         self.deconv_6_1 = nn.ConvTranspose2d(256, 128, (2, 2), 2)
         # 121x121 -> 88x88 crop
@@ -155,7 +155,7 @@ class UNet(nn.Module):
         torch.nn.init.kaiming_normal_(self.conv_6_7.weight)
         self.relu_6_8 = nn.ReLU()
         self.norm_6_9 = nn.BatchNorm2d(128)
-        self.dq_3 = torch.quantization.QuantStub()
+        self.dq_3 = torch.quantization.DeQuantStub()
         
         self.deconv_7_1 = nn.ConvTranspose2d(128, 64, (2, 2), 2)
         # 252x252 -> 168x168 crop

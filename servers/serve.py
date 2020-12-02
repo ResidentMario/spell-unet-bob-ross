@@ -173,4 +173,4 @@ class Predictor(BasePredictor):
     def predict(self, payload):
         img = torch.tensor(payload["image"]).to(self.device)
         segmap = self.model(img)
-        return {"segmap": segmap}
+        return {"segmap": segmap.detach().tolist()}
